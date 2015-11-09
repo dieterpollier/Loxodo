@@ -1,0 +1,13 @@
+{
+  "name": "dieterpollier/loxodo",
+  "description": "Basic PHP framework",
+  "require" : {
+    "vlucas/phpdotenv" : "2.0.1"
+  },
+  "authors": [
+    {
+      "name": "dieterpollier",
+      "email": "dieter@dp-webtechnics.be"
+    }
+  ]
+}
