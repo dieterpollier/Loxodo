@@ -2,7 +2,6 @@
 
 namespace Loxodo\App;
 
-use Loxodo\App\InjectionContainer;
 
 class App
 {
@@ -59,9 +58,12 @@ class App
 
     protected function loadHelpers()
     {
-        include_once PROJECT_ROOT.'packages/loxodo/Helpers/view.php';
-        include_once PROJECT_ROOT.'packages/loxodo/Helpers/response.php';
-        include_once PROJECT_ROOT.'packages/loxodo/Helpers/language.php';
+        $absApplicationPath = realpath(__DIR__);
+        $helpersPath = substr($absApplicationPath, 0, strrpos($absApplicationPath, 'App')).'Helpers/';
+
+        include_once $helpersPath.'view.php';
+        include_once $helpersPath.'response.php';
+        include_once $helpersPath.'language.php';
     }
 
     public function handleRequest(InjectionContainer $injectionContainer = null)

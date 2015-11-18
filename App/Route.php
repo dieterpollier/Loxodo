@@ -4,8 +4,6 @@
 namespace Loxodo\App;
 
 
-use Loxodo\App\InjectionContainer;
-use Loxodo\App\Injector;
 use ReflectionClass;
 
 class Route
@@ -15,7 +13,6 @@ class Route
     protected $folders = array(), $params = array(), $controllerParams = array(), $injections = array();
     protected $controller = "", $function = "", $hasAccess = true, $countUriInjections = 0, $countSystemInjections = 0;
 
-    const ControllerDirectory = "../application/Controllers/";
 
     public function __construct($method, $uri, Guard $guard, InjectionContainer $injectionContainer)
     {
@@ -81,7 +78,7 @@ class Route
 
     public function getDir()
     {
-        return self::ControllerDirectory . $this->collapse($this->folders) . '/';
+        return PROJECT_ROOT. CONTROLLER_PATH . $this->collapse($this->folders) . '/';
     }
 
     protected function collapse($array, $separator = "/")

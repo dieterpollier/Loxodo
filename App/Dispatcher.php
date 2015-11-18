@@ -37,8 +37,8 @@ class Dispatcher
     protected function loadGuard($user)
     {
         $guardConfiguration = array();
-        if(file_exists(CONFIG_PATH.'accessmapper.json')){
-            $guardConfiguration = json_decode(file_get_contents(CONFIG_PATH.'accessmapper.json'));
+        if(file_exists(PROJECT_ROOT.CONFIG_PATH.'accessmapper.json')){
+            $guardConfiguration = json_decode(file_get_contents(PROJECT_ROOT.CONFIG_PATH.'accessmapper.json'));
         }
         return new Guard($user, $guardConfiguration);
     }
