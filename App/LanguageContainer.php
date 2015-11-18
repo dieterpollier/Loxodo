@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App;
+namespace Loxodo\App;
 
 
 class LanguageContainer

@@ -1,6 +1,6 @@
 <?php
 
-use App\CSRFProtector;
+use Loxodo\App\CSRFProtector;
 
 function view($view, $data = array())
 {

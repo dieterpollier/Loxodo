@@ -4,13 +4,15 @@
  * Rights are property of DP-Webtechnics
  */
 
-namespace App;
+namespace Loxodo\App;
 
+
+use Loxodo\App\InjectionContainer;
 
 class Dispatcher
 {
 
-    public function dispatch(Request $request, $injections)
+    public function dispatch(Request $request, InjectionContainer $injections)
     {
         $guard = $this->loadGuard($request->getUser());
         $route = new Route($request->getMethod(), $request->getUri(), $guard, $injections);

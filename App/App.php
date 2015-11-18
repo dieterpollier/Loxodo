@@ -1,20 +1,29 @@
 <?php
 
-namespace App;
+namespace Loxodo\App;
 
-use Illuminate\Database\Capsule\Manager as Capsule;
+use Loxodo\App\InjectionContainer;
 
 class App
 {
 
     protected $injections = array();
     protected $request;
+    protected $configPath;
+
+    /**
+     * App constructor.
+     */
+    public function __construct($configPath)
+    {
+        $this->configPath = $configPath;
+    }
+
 
     public function run()
     {
         $this->boot();
-        $this->initDatabase();
-        $this->handleRequest();
+        $this->handleRequest(new InjectionContainer());
     }
 
     /**
@@ -27,27 +36,9 @@ class App
 
     protected function initEnvironment()
     {
-        $dotEnv = new \Dotenv\Dotenv('../');
+        include_once $this->configPath;
+        $dotEnv = new \Dotenv\Dotenv(PROJECT_ROOT);
         $dotEnv->load();
-        include_once '../application/config/config.php';
-    }
-
-    protected function initDatabase()
-    {
-        $capsule = new Capsule;
-
-        $capsule->addConnection(array(
-            'driver'    => 'mysql',
-            'host'      => getenv('DB_HOST'),
-            'database'  => getenv('DB_NAME'),
-            'username'  => getenv('DB_USER'),
-            'password'  => getenv('DB_PASSWORD'),
-            'charset'   => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix'    => '',
-        ));
-        $capsule->setAsGlobal();
-        $capsule->bootEloquent();
     }
 
     protected function setErrorHandling()
@@ -68,21 +59,19 @@ class App
 
     protected function loadHelpers()
     {
-        include_once PROJECT_ROOT.'system/Helpers/view.php';
-        include_once PROJECT_ROOT.'system/Helpers/response.php';
-        include_once PROJECT_ROOT.'system/Helpers/language.php';
+        include_once PROJECT_ROOT.'packages/loxodo/Helpers/view.php';
+        include_once PROJECT_ROOT.'packages/loxodo/Helpers/response.php';
+        include_once PROJECT_ROOT.'packages/loxodo/Helpers/language.php';
     }
 
-    public function handleRequest()
+    public function handleRequest(InjectionContainer $injectionContainer = null)
     {
         $dispatcher = new Dispatcher();
-        $this->addInjection('request', $this->request);
-        $dispatcher->dispatch($this->request, $this->injections);
-    }
-
-    public function addInjection($name, $value)
-    {
-        $this->injections[$name] = $value;
+        if(is_null($injectionContainer)){
+            $injectionContainer = new InjectionContainer();
+        }
+        $injectionContainer->setRequest($this->request);
+        $dispatcher->dispatch($this->request, $injectionContainer);
     }
 
     public function close()

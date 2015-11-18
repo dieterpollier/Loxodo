@@ -1,11 +1,12 @@
 <?php
 
 
-namespace App;
+namespace Loxodo\App;
 
 
+use Loxodo\App\InjectionContainer;
+use Loxodo\App\Injector;
 use ReflectionClass;
-use ReflectionMethod;
 
 class Route
 {
@@ -16,7 +17,7 @@ class Route
 
     const ControllerDirectory = "../application/Controllers/";
 
-    public function __construct($method, $uri, Guard $guard, $systemInjections)
+    public function __construct($method, $uri, Guard $guard, InjectionContainer $injectionContainer)
     {
         $this->uri = $uri;
         $this->method = $method;
@@ -27,7 +28,7 @@ class Route
         }
         if(!empty($this->controller)){
             $this->setFunction();
-            $this->setInjections($systemInjections);
+            $this->setInjections($injectionContainer);
         }
     }
 
@@ -130,28 +131,12 @@ class Route
         }
     }
 
-    protected function setInjections($systemInjections)
+    protected function setInjections(InjectionContainer $injectionContainer)
     {
-        $function = $this->getFunction();
-        if(!empty($this->controller) && !empty($function)){
-            $class = new ReflectionClass($this->getController());
-
-            if ($class->hasMethod($function)) {
-                $method = $class->getMethod($function);
-                $parameters = $method->getParameters();
-                $keys = array_keys($this->params);
-                foreach($parameters as $index => $parameter){
-                    if(isset($systemInjections[$parameter->getName()])){
-                        $this->injections[$index] = $systemInjections[$parameter->getName()];
-                        $this->countSystemInjections++;
-                    } elseif(isset($keys[$this->countUriInjections])){
-                        $this->injections[$index] = $this->params[$keys[$this->countUriInjections]];
-                        $this->countUriInjections++;
-                    }
-                }
-            }
-        }
-
+        $injector = new Injector($injectionContainer);
+        $this->injections = $injector->getControllerParameters($this->getController(), $this->getFunction(), $this->params);
+        $this->countSystemInjections = $injector->getCountSystemInjections();
+        $this->countUriInjections = $injector->getCountUriInjections();
     }
 
     /**
