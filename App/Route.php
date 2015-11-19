@@ -18,15 +18,12 @@ class Route
     {
         $this->uri = $uri;
         $this->method = $method;
-        if(empty($this->uri)){
+        $this->parseUri($guard);
+        if(empty($this->controller)){
             $this->controller = DEFAULT_CONTROLLER;
-        } else{
-            $this->parseUri($guard);
         }
-        if(!empty($this->controller)){
-            $this->setFunction();
-            $this->setInjections($injectionContainer);
-        }
+        $this->setFunction();
+        $this->setInjections($injectionContainer);
     }
 
     /**

@@ -38,6 +38,8 @@ class App
         include_once $this->configPath;
         $dotEnv = new \Dotenv\Dotenv(PROJECT_ROOT);
         $dotEnv->load();
+        $absApplicationPath = realpath(__DIR__);
+        define('LOXODO_BASE_PATH', substr($absApplicationPath, 0, strrpos($absApplicationPath, 'App')));
     }
 
     protected function setErrorHandling()
@@ -58,8 +60,7 @@ class App
 
     protected function loadHelpers()
     {
-        $absApplicationPath = realpath(__DIR__);
-        $helpersPath = substr($absApplicationPath, 0, strrpos($absApplicationPath, 'App')).'Helpers/';
+        $helpersPath = LOXODO_BASE_PATH .'Helpers/';
 
         include_once $helpersPath.'view.php';
         include_once $helpersPath.'response.php';

@@ -6,14 +6,9 @@
 
 namespace Loxodo\App;
 
-/**
- * An instance of the visitor for the website
- * Class User
- * @package App
- */
-class User implements UserInterface
-{
 
+trait UserTrait
+{
     protected $id, $account, $profile, $timestamp, $lastRequest;
 
     /**
