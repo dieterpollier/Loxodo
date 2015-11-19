@@ -48,7 +48,9 @@ class App
         if(getenv('SHOW_ERRORS') === "true"){
             error_reporting(E_ALL);
         } else{
-            error_reporting(0);
+            ini_set('display_errors', 0);
+            ob_start();
+            //error_reporting(0);
         }
     }
 
@@ -81,7 +83,10 @@ class App
     {
         $error = error_get_last();
         if($error && getenv('SHOW_ERRORS') !== "true"){
+            ob_end_clean();
             showError(500);
+        } elseif(getenv('SHOW_ERRORS') !== "true"){
+            ob_end_flush();
         }
     }
 
