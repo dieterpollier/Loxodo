@@ -49,6 +49,7 @@ class App
             error_reporting(E_ALL);
             ini_set('display_errors', 1);
         } else{
+            error_reporting(E_ERROR | E_PARSE | E_WARNING);
             ini_set('display_errors', 0);
             ob_start();
         }
@@ -81,12 +82,14 @@ class App
 
     public function close()
     {
-        $error = error_get_last();
-        if($error && getenv('SHOW_ERRORS') !== "true"){
-            ob_end_clean();
-            showError(500);
-        } elseif(getenv('SHOW_ERRORS') !== "true"){
-            ob_end_flush();
+        if(getenv('SHOW_ERRORS') !== "true"){
+            $error = error_get_last();
+            if($error && !in_array($error['type'], array(E_NOTICE, E_DEPRECATED))){
+                ob_end_clean();
+                showError(500);
+            } else {
+                ob_end_flush();
+            }
         }
     }
 
