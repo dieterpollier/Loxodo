@@ -47,10 +47,10 @@ class App
         register_shutdown_function(array($this, 'close'));
         if(getenv('SHOW_ERRORS') === "true"){
             error_reporting(E_ALL);
+            ini_set('display_errors', 1);
         } else{
             ini_set('display_errors', 0);
             ob_start();
-            //error_reporting(0);
         }
     }
 
