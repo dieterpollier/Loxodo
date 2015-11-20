@@ -1,20 +1,28 @@
 <?php
 
-namespace App;
+namespace Loxodo\App;
 
-use Illuminate\Database\Capsule\Manager as Capsule;
 
 class App
 {
 
     protected $injections = array();
     protected $request;
+    protected $configPath;
+
+    /**
+     * App constructor.
+     */
+    public function __construct($configPath)
+    {
+        $this->configPath = $configPath;
+    }
+
 
     public function run()
     {
         $this->boot();
-        $this->initDatabase();
-        $this->handleRequest();
+        $this->handleRequest(new InjectionContainer());
     }
 
     /**
@@ -27,27 +35,11 @@ class App
 
     protected function initEnvironment()
     {
-        $dotEnv = new \Dotenv\Dotenv('../');
+        include_once $this->configPath;
+        $dotEnv = new \Dotenv\Dotenv(PROJECT_ROOT);
         $dotEnv->load();
-        include_once '../application/config/config.php';
-    }
-
-    protected function initDatabase()
-    {
-        $capsule = new Capsule;
-
-        $capsule->addConnection(array(
-            'driver'    => 'mysql',
-            'host'      => getenv('DB_HOST'),
-            'database'  => getenv('DB_NAME'),
-            'username'  => getenv('DB_USER'),
-            'password'  => getenv('DB_PASSWORD'),
-            'charset'   => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix'    => '',
-        ));
-        $capsule->setAsGlobal();
-        $capsule->bootEloquent();
+        $absApplicationPath = realpath(__DIR__);
+        define('LOXODO_BASE_PATH', substr($absApplicationPath, 0, strrpos($absApplicationPath, 'App')));
     }
 
     protected function setErrorHandling()
@@ -55,8 +47,11 @@ class App
         register_shutdown_function(array($this, 'close'));
         if(getenv('SHOW_ERRORS') === "true"){
             error_reporting(E_ALL);
+            ini_set('display_errors', 1);
         } else{
-            error_reporting(0);
+            error_reporting(E_ERROR | E_PARSE | E_WARNING);
+            ini_set('display_errors', 0);
+            ob_start();
         }
     }
 
@@ -68,28 +63,33 @@ class App
 
     protected function loadHelpers()
     {
-        include_once PROJECT_ROOT.'system/Helpers/view.php';
-        include_once PROJECT_ROOT.'system/Helpers/response.php';
-        include_once PROJECT_ROOT.'system/Helpers/language.php';
+        $helpersPath = LOXODO_BASE_PATH .'Helpers/';
+
+        include_once $helpersPath.'view.php';
+        include_once $helpersPath.'response.php';
+        include_once $helpersPath.'language.php';
     }
 
-    public function handleRequest()
+    public function handleRequest(InjectionContainer $injectionContainer = null)
     {
         $dispatcher = new Dispatcher();
-        $this->addInjection('request', $this->request);
-        $dispatcher->dispatch($this->request, $this->injections);
-    }
-
-    public function addInjection($name, $value)
-    {
-        $this->injections[$name] = $value;
+        if(is_null($injectionContainer)){
+            $injectionContainer = new InjectionContainer();
+        }
+        $injectionContainer->setRequest($this->request);
+        $dispatcher->dispatch($this->request, $injectionContainer);
     }
 
     public function close()
     {
-        $error = error_get_last();
-        if($error && getenv('SHOW_ERRORS') !== "true"){
-            showError(500);
+        if(getenv('SHOW_ERRORS') !== "true"){
+            $error = error_get_last();
+            if($error && !in_array($error['type'], array(E_NOTICE, E_DEPRECATED))){
+                ob_end_clean();
+                showError(500);
+            } else {
+                ob_end_flush();
+            }
         }
     }
 

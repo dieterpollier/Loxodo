@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App;
+namespace Loxodo\App;
 
 
 class LanguageContainer
@@ -41,7 +41,7 @@ class LanguageContainer
 
     protected function loadTranslations($language, &$slugArray)
     {
-        $file = PROJECT_ROOT .'resources/languages/'. $language. '/'. implode('/', $slugArray). '.php';
+        $file = PROJECT_ROOT .LANG_PATH. $language. '/'. implode('/', $slugArray). '.php';
         if(file_exists($file)){
             require_once $file;
             return $lang;

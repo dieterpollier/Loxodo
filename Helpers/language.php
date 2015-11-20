@@ -1,7 +1,7 @@
 <?php
 
 global $langContainer;
-$langContainer = new \App\LanguageContainer();
+$langContainer = new \Loxodo\App\LanguageContainer();
 
 function lang($slug, $language = REQUEST_LANG)
 {

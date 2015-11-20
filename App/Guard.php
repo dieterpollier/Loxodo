@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App;
+namespace Loxodo\App;
 
 /**
  * Implements the security-settings from the config/accessmapper.json to the uri

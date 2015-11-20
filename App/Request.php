@@ -4,7 +4,7 @@
  * Rights are property of DP-Webtechnics
  */
 
-namespace App;
+namespace Loxodo\App;
 
 
 class Request
@@ -129,6 +129,17 @@ class Request
     public function isGetRequest()
     {
         return $this->method == "GET";
+    }
+
+    public function getHost()
+    {
+        $arr = explode('/', $_SERVER['SERVER_PROTOCOL']);
+        return $arr[0].'://'. $this->getDomain();
+    }
+
+    public function getDomain()
+    {
+        return $_SERVER['HTTP_HOST'];
     }
 
 

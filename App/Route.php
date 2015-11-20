@@ -1,11 +1,10 @@
 <?php
 
 
-namespace App;
+namespace Loxodo\App;
 
 
 use ReflectionClass;
-use ReflectionMethod;
 
 class Route
 {
@@ -14,21 +13,17 @@ class Route
     protected $folders = array(), $params = array(), $controllerParams = array(), $injections = array();
     protected $controller = "", $function = "", $hasAccess = true, $countUriInjections = 0, $countSystemInjections = 0;
 
-    const ControllerDirectory = "../application/Controllers/";
 
-    public function __construct($method, $uri, Guard $guard, $systemInjections)
+    public function __construct($method, $uri, Guard $guard, InjectionContainer $injectionContainer)
     {
         $this->uri = $uri;
         $this->method = $method;
-        if(empty($this->uri)){
+        $this->parseUri($guard);
+        if(empty($this->controller)){
             $this->controller = DEFAULT_CONTROLLER;
-        } else{
-            $this->parseUri($guard);
         }
-        if(!empty($this->controller)){
-            $this->setFunction();
-            $this->setInjections($systemInjections);
-        }
+        $this->setFunction();
+        $this->setInjections($injectionContainer);
     }
 
     /**
@@ -80,7 +75,7 @@ class Route
 
     public function getDir()
     {
-        return self::ControllerDirectory . $this->collapse($this->folders) . '/';
+        return PROJECT_ROOT. CONTROLLER_PATH . $this->collapse($this->folders) . '/';
     }
 
     protected function collapse($array, $separator = "/")
@@ -130,28 +125,12 @@ class Route
         }
     }
 
-    protected function setInjections($systemInjections)
+    protected function setInjections(InjectionContainer $injectionContainer)
     {
-        $function = $this->getFunction();
-        if(!empty($this->controller) && !empty($function)){
-            $class = new ReflectionClass($this->getController());
-
-            if ($class->hasMethod($function)) {
-                $method = $class->getMethod($function);
-                $parameters = $method->getParameters();
-                $keys = array_keys($this->params);
-                foreach($parameters as $index => $parameter){
-                    if(isset($systemInjections[$parameter->getName()])){
-                        $this->injections[$index] = $systemInjections[$parameter->getName()];
-                        $this->countSystemInjections++;
-                    } elseif(isset($keys[$this->countUriInjections])){
-                        $this->injections[$index] = $this->params[$keys[$this->countUriInjections]];
-                        $this->countUriInjections++;
-                    }
-                }
-            }
-        }
-
+        $injector = new Injector($injectionContainer);
+        $this->injections = $injector->getControllerParameters($this->getController(), $this->getFunction(), $this->params);
+        $this->countSystemInjections = $injector->getCountSystemInjections();
+        $this->countUriInjections = $injector->getCountUriInjections();
     }
 
     /**

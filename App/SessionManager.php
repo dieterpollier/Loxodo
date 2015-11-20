@@ -4,7 +4,7 @@
  * Rights are property of DP-Webtechnics
  */
 
-namespace App;
+namespace Loxodo\App;
 
 
 class SessionManager
@@ -18,7 +18,7 @@ class SessionManager
     {
         if(!isset($_SESSION['__user'])){
             $_SESSION['__user'] = new User();
-        } elseif(is_a($_SESSION['__user'], 'App\User') && $_SESSION['__user']->isLoggedIn()){
+        } elseif(is_a($_SESSION['__user'], 'Loxodo\App\UserInterface') && $_SESSION['__user']->isLoggedIn()){
             $_SESSION['__user']->setLoggedIn();
         }
         return $_SESSION['__user'];

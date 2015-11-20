@@ -4,13 +4,15 @@
  * Rights are property of DP-Webtechnics
  */
 
-namespace App;
+namespace Loxodo\App;
 
+
+use Loxodo\App\InjectionContainer;
 
 class Dispatcher
 {
 
-    public function dispatch(Request $request, $injections)
+    public function dispatch(Request $request, InjectionContainer $injections)
     {
         $guard = $this->loadGuard($request->getUser());
         $route = new Route($request->getMethod(), $request->getUri(), $guard, $injections);
@@ -35,8 +37,8 @@ class Dispatcher
     protected function loadGuard($user)
     {
         $guardConfiguration = array();
-        if(file_exists(CONFIG_PATH.'accessmapper.json')){
-            $guardConfiguration = json_decode(file_get_contents(CONFIG_PATH.'accessmapper.json'));
+        if(file_exists(PROJECT_ROOT.CONFIG_PATH.'accessmapper.json')){
+            $guardConfiguration = json_decode(file_get_contents(PROJECT_ROOT.CONFIG_PATH.'accessmapper.json'));
         }
         return new Guard($user, $guardConfiguration);
     }
