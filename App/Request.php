@@ -131,5 +131,16 @@ class Request
         return $this->method == "GET";
     }
 
+    public function getHost()
+    {
+        $arr = explode('/', $_SERVER['SERVER_PROTOCOL']);
+        return $arr[0].'://'. $this->getDomain();
+    }
+
+    public function getDomain()
+    {
+        return $_SERVER['HTTP_HOST'];
+    }
+
 
 }
