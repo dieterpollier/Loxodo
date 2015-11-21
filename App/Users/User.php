@@ -4,7 +4,8 @@
  * Rights are property of DP-Webtechnics
  */
 
-namespace Loxodo\App;
+namespace Loxodo\App\Users;
+use Loxodo\App\Users\UserInterface;
 
 /**
  * An instance of the visitor for the website

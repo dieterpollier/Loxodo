@@ -1,7 +1,9 @@
 <?php
 
 
-namespace Loxodo\App;
+namespace Loxodo\App\Users;
+use Loxodo\App\Users;
+use Loxodo\App\Users\User;
 
 /**
  * Implements the security-settings from the config/accessmapper.json to the uri
@@ -13,7 +15,7 @@ class Guard
 {
 
     /**
-     * @var User
+     * @var \Loxodo\App\Users\User
      */
     protected $user;
     protected $guarded = array();
@@ -22,7 +24,7 @@ class Guard
      * Guard constructor.
      * @param $user
      */
-    public function __construct(User $user, $guarded)
+    public function __construct(Users\User $user, $guarded)
     {
         $this->user = $user;
         foreach($guarded as $map){

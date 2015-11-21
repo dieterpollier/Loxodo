@@ -4,7 +4,7 @@
  * Rights are property of DP-Webtechnics
  */
 
-namespace Loxodo\App;
+namespace Loxodo\App\Request;
 
 
 class CSRFProtector

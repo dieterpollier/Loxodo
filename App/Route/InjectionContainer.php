@@ -4,7 +4,8 @@
  * Rights are property of DP-Webtechnics
  */
 
-namespace Loxodo\App;
+namespace Loxodo\App\Route;
+use Loxodo\App\Request\Request;
 
 
 /**
@@ -14,7 +15,7 @@ namespace Loxodo\App;
 class InjectionContainer
 {
     /**
-     * @var Request
+     * @var \Loxodo\App\Request\Request
      */
     public $request = null;
 

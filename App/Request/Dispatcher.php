@@ -4,10 +4,14 @@
  * Rights are property of DP-Webtechnics
  */
 
-namespace Loxodo\App;
+namespace Loxodo\App\Request;
 
 
-use Loxodo\App\InjectionContainer;
+use Loxodo\App\Users\Guard;
+use Loxodo\App\Request\CSRFProtector;
+use Loxodo\App\Request\Request;
+use Loxodo\App\Route\InjectionContainer;
+use Loxodo\App\Route\Route;
 
 class Dispatcher
 {

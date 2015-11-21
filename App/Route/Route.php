@@ -1,9 +1,12 @@
 <?php
 
 
-namespace Loxodo\App;
+namespace Loxodo\App\Route;
 
 
+use Loxodo\App\Users\Guard;
+use Loxodo\App\Route\InjectionContainer;
+use Loxodo\App\Route\Injector;
 use ReflectionClass;
 
 class Route

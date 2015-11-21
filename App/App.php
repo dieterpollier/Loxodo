@@ -3,6 +3,11 @@
 namespace Loxodo\App;
 
 
+use Loxodo\App\Request\Dispatcher;
+use Loxodo\App\Request\Request;
+use Loxodo\App\Request\RequestBuilder;
+use Loxodo\App\Route\InjectionContainer;
+
 class App
 {
 
