@@ -1,5 +1,5 @@
 {
-  "name": "dieterpollier",
+  "name": "dieterpollier/loxodo",
   "description": "Basic PHP framework",
   "version": "1.0.0",
   "require" : {
