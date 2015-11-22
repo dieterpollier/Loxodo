@@ -1,9 +1,12 @@
 <?php
 
 
-namespace Loxodo\App;
+namespace Loxodo\App\Route;
 
 
+use Loxodo\App\Users\Guard;
+use Loxodo\App\Route\InjectionContainer;
+use Loxodo\App\Route\Injector;
 use ReflectionClass;
 
 class Route
@@ -90,14 +93,19 @@ class Route
 
     protected function setFunction()
     {
-        if (!$this->setFunctionFromUri()) {
+        $class = new ReflectionClass($this->getController());
+        if($class->implementsInterface('Loxodo\App\Route\WildCartControllerInterface')){
+            if(count($this->params) == count($this->controllerParams)){
+                $this->function = 'index';
+                $this->params = array(implode('/', $this->controllerParams));
+            }
+        } elseif (!$this->setFunctionFromUri($class)) {
             $this->setDefaultRestFunction();
         }
     }
 
-    protected function setFunctionFromUri()
+    protected function setFunctionFromUri(ReflectionClass $class)
     {
-        $class = new ReflectionClass($this->getController());
         foreach ($this->params as $key => $param) {
             if (in_array($param, $this->controllerParams) && $class->hasMethod($param)) {
                 $this->function = $param;

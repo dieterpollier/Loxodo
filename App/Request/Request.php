@@ -4,8 +4,10 @@
  * Rights are property of DP-Webtechnics
  */
 
-namespace Loxodo\App;
+namespace Loxodo\App\Request;
 
+
+use Loxodo\App\Users\User;
 
 class Request
 {

@@ -4,8 +4,11 @@
  * Rights are property of DP-Webtechnics
  */
 
-namespace Loxodo\App;
+namespace Loxodo\App\Request;
 
+
+use Loxodo\App\Request\Request;
+use Loxodo\App\Request\SessionManager;
 
 class RequestBuilder
 {
@@ -45,7 +48,7 @@ class RequestBuilder
         if($getParamStart !== false){
             $uri = substr($uri, 0, $getParamStart);
         }
-        return (string)$uri;
+        return (string)urldecode($uri);
     }
 
     /**

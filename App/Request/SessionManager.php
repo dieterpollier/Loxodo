@@ -4,21 +4,24 @@
  * Rights are property of DP-Webtechnics
  */
 
-namespace Loxodo\App;
+namespace Loxodo\App\Request;
 
+
+use Loxodo\App\Users;
+use Loxodo\App\Users\User;
 
 class SessionManager
 {
 
     /**
      * If there is a user in the session return the user, otherwise create a user
-     * @return User
+     * @return \Loxodo\App\Users\User
      */
     public static function loadUser()
     {
         if(!isset($_SESSION['__user'])){
             $_SESSION['__user'] = new User();
-        } elseif(is_a($_SESSION['__user'], 'Loxodo\App\UserInterface') && $_SESSION['__user']->isLoggedIn()){
+        } elseif(is_a($_SESSION['__user'], 'Loxodo\App\Users\UserInterface') && $_SESSION['__user']->isLoggedIn()){
             $_SESSION['__user']->setLoggedIn();
         }
         return $_SESSION['__user'];
@@ -26,9 +29,9 @@ class SessionManager
 
     /**
      * Set the current user
-     * @param User $user
+     * @param \Loxodo\App\Users\User $user
      */
-    public static function setUser(User $user)
+    public static function setUser(Users\User $user)
     {
         $_SESSION['__user'] = $user;
     }
