@@ -23,7 +23,7 @@ class User implements UserInterface
      * @param $profile
      * @param $timestamp
      */
-    public function __construct($id = 0, $account = "", $profile = "")
+    public function __construct($id = 0, $account = "", $profile = "", $loggedIn = false)
     {
         $this->id = $id;
         $this->account = $account;
@@ -31,8 +31,12 @@ class User implements UserInterface
             $this->profile = DEFAULT_PROFILE;
         }
         $this->profile = $profile;
-        $this->timestamp = time();
-        $this->lastRequest = time();
+        if($loggedIn){
+            $this->setLoggedIn();
+        }else {
+            $this->timestamp = 0;
+            $this->lastRequest = 0;
+        }
     }
 
     /**
