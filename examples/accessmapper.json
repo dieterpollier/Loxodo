@@ -1,0 +1,9 @@
+[
+  {
+    "directory": "Foo/Bar",
+    "csrf": true,
+    "profiles":{
+      "administrator": "Foo/Bar"
+    }
+  }
+]
