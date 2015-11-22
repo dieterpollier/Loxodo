@@ -1,7 +1,7 @@
 {
-  "name": "dieterpollier",
+  "name": "dieterpollier/loxodo",
   "description": "Basic PHP framework",
-  "version": "1.0.0",
+  "license": "MIT",
   "require" : {
     "vlucas/phpdotenv" : "2.0.1"
   },
