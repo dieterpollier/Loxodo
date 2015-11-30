@@ -32,7 +32,8 @@ class User implements UserInterface
         }
         $this->profile = $profile;
         if($loggedIn){
-            $this->setLoggedIn();
+            $this->timestamp = time();
+            $this->lastRequest = time();
         }else {
             $this->timestamp = 0;
             $this->lastRequest = 0;

@@ -22,11 +22,14 @@ class Route
         $this->uri = $uri;
         $this->method = $method;
         $this->parseUri($guard);
-        if(empty($this->controller)){
-            $this->controller = DEFAULT_CONTROLLER;
+        if($this->hasAccess()){
+            if(empty($this->controller)){
+                $this->controller = DEFAULT_CONTROLLER;
+            }
+            $this->setFunction();
+            $this->setInjections($injectionContainer);
         }
-        $this->setFunction();
-        $this->setInjections($injectionContainer);
+
     }
 
     /**
