@@ -18,16 +18,6 @@ class Request
     protected $flash;
     protected $language;
 
-
-
-    public function __construct()
-    {
-        $this->language = DEFAULT_LANG;
-        if(!defined('REQUEST_LANG')){
-            define('REQUEST_LANG', $this->language);
-        }
-    }
-
     public function setUri($uri)
     {
         $this->uri = (string)$uri;
@@ -43,7 +33,10 @@ class Request
      */
     public function setLanguage($language)
     {
-        $this->language = $language;
+        $this->language = !empty($language) ? $language : DEFAULT_LANG;
+        if(!defined('REQUEST_LANG')){
+            define('REQUEST_LANG', $this->language);
+        }
     }
 
     /**

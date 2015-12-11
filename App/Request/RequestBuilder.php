@@ -79,9 +79,9 @@ class RequestBuilder
 
         if(strlen($uri) >= 2){
             $abbr = strtolower(substr($uri, 0, 3));
-            if(in_array($abbr, array('nl/', 'en/'))){
+            if(in_array($abbr, array('nl', 'en', 'fr'))){
                 $response->language = str_replace('/', '', $abbr);
-                $response->uri = substr($uri, 3);
+                $response->uri = $this->cleanUri(substr($uri, 2));
             }
         }
         return $response;
