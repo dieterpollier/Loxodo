@@ -78,7 +78,7 @@ class RequestBuilder
         $response->language = DEFAULT_LANG;
 
         if(strlen($uri) >= 2){
-            $abbr = strtolower(substr($uri, 0, 3));
+            $abbr = strtolower(substr($uri, 0, 2));
             if(in_array($abbr, array('nl', 'en', 'fr'))){
                 $response->language = str_replace('/', '', $abbr);
                 $response->uri = $this->cleanUri(substr($uri, 2));
