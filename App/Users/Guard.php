@@ -56,7 +56,15 @@ class Guard
             return isset($map->profiles->$profile);
         }
         return false;
+    }
 
+    public function getHttpRedirect($directory)
+    {
+        $dir = $this->convertDirectory($directory);
+        if($this->isGuarded($dir) && !empty($this->guarded[$dir]->redirect)){
+            return $this->guarded[$dir]->redirect;
+        }
+        return '';
     }
 
     /**
@@ -75,6 +83,15 @@ class Guard
             }
         }
         return $directory;
+    }
+
+    public function getPortalController($directory)
+    {
+        if(isset($this->guarded[$this->convertDirectory($directory)])){
+            $map = $this->guarded[$this->convertDirectory($directory)];
+            return $map->portal? $map->portal : '';
+        }
+        return '';
     }
 
     /**

@@ -21,6 +21,10 @@ class Dispatcher
         $guard = $this->loadGuard($request->getUser());
         $route = new Route($request->getMethod(), $request->getUri(), $guard, $injections);
         if(!$route->hasAccess()){
+            $redirect = $guard->getHttpRedirect($route->getFolders());
+            if(!empty($redirect)){
+                redirect($redirect);
+            }
             showError(403);
         }
 

@@ -22,10 +22,11 @@ class Route
         $this->uri = $uri;
         $this->method = $method;
         $this->parseUri($guard);
-        if($this->hasAccess()){
+        if($this->hasAccess() || $guard->getPortalController(implode('/',$this->folders)) == $this->controller){
             if(empty($this->controller)){
                 $this->controller = DEFAULT_CONTROLLER;
             }
+            $this->hasAccess = true;
             $this->setFunction();
             $this->setInjections($injectionContainer);
         }
@@ -54,7 +55,6 @@ class Route
                             $this->folders = explode('/',$guard->getDestination($protectionPath));
                         } else {
                             $this->hasAccess = false;
-                            return;
                         }
                     }
                     $this->definesController($this->getDir().'/'.ucfirst($piece), $piece);
@@ -82,6 +82,11 @@ class Route
     public function getDir()
     {
         return PROJECT_ROOT. CONTROLLER_PATH . $this->collapse($this->folders) . '/';
+    }
+
+    public function getFolders()
+    {
+        return implode('/',$this->folders);
     }
 
     protected function collapse($array, $separator = "/")
