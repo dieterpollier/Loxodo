@@ -19,7 +19,7 @@ function sysview($view, $data = array())
     if(file_exists(PROJECT_ROOT.VIEW_PATH.'errors/'.$view.'.php')){
         require PROJECT_ROOT.VIEW_PATH.'errors/'.$view.'.php';
     } else{
-        require  LOXODO_BASE_PATH .'view/' . $view . '.php';
+        require  LOXODO_VIEW_PATH .'view/' . $view . '.php';
     }
     $content = ob_get_contents();
     ob_end_clean();

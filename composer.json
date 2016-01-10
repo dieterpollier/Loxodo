@@ -11,5 +11,11 @@
       "name": "dieterpollier",
       "email": "dieter@dp-webtechnics.be"
     }
-  ]
+  ],
+  "autoload" :{
+    "psr-4": {
+      "Loxodo\\" : "src/"
+    }
+  }
+
 }

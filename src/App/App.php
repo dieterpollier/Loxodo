@@ -45,6 +45,7 @@ class App
         $dotEnv->load();
         $absApplicationPath = realpath(__DIR__);
         define('LOXODO_BASE_PATH', substr($absApplicationPath, 0, strrpos($absApplicationPath, 'App')));
+        define('LOXODO_VIEW_PATH', substr($absApplicationPath, 0, strrpos($absApplicationPath, 'src/App')));
     }
 
     protected function setErrorHandling()
