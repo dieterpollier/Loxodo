@@ -89,7 +89,7 @@ class Guard
     {
         if(isset($this->guarded[$this->convertDirectory($directory)])){
             $map = $this->guarded[$this->convertDirectory($directory)];
-            return $map->portal? $map->portal : '';
+            return isset($map->portal) ? $map->portal : '';
         }
         return '';
     }

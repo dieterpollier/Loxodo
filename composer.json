@@ -1,5 +1,6 @@
 {
   "name": "dieterpollier/loxodo",
+  "type": "library",
   "description": "Basic PHP framework",
   "license": "MIT",
   "require" : {
