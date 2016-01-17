@@ -12,6 +12,14 @@
       "email": "dieter@dp-webtechnics.be"
     }
   ],
+  "support": {
+    "email": "dieter@dp-webtechnics.be",
+    "issues": "https://github.com/dieterpollier/loxodo/issues",
+    "forum": "",
+    "wiki": "https://github.com/dieterpollier/loxodo/wiki",
+    "irc": "",
+    "source": ""
+  },
   "autoload" :{
     "psr-4": {
       "Loxodo\\" : "src/"
