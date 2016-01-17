@@ -29,7 +29,7 @@ class Dispatcher
         }
 
         //Load the page
-        if($route->getMethod() !== "GET" && $this->isCsrfViolation($guard, $route->getDir())){
+        if($route->getMethod() !== "GET" && $this->isCsrfViolation($guard, $route->getFolders())){
             redirect($_SERVER['HTTP_REFERER']);
         } elseif($route->isValidRoute()){
             $class = $route->getController();

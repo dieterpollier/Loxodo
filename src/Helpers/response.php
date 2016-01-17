@@ -6,6 +6,16 @@
 
 function redirect($location, $statuscode = "303")
 {
+    if(REDIRECT_FROM_ROOT && strpos($location, 'http') !== 0){
+        if(!preg_match('/^([\/])/', $location)){
+            $location = '/'.$location;
+        }
+        if(REDIRECT_ADD_LANG && !preg_match('/^([\/]{0,1})(nl|NL|fr|FR|en|EN)/', $location)){
+            $location = '/'.REQUEST_LANG. $location;
+        }
+
+    }
+
     //http_response_code($statuscode);
     header('Location: '.$location, true, $statuscode);
     exit();

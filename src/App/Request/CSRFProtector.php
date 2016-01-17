@@ -21,13 +21,15 @@ class CSRFProtector
 
     public function validCSRF()
     {
-        foreach($_SESSION['csrf_tokens'] as $key => $token){
-            if(time() > $token->expires){
-                unset($_SESSION['csrf_tokens'][$key]);
-            }
-            elseif($token->csrfToken == $_POST['_csrf']){
-                unset($_SESSION['csrf_tokens'][$key]);
-                return true;
+        if(!empty($_SESSION['csrf_tokens'])){
+            foreach($_SESSION['csrf_tokens'] as $key => $token){
+                if(time() > $token->expires){
+                    unset($_SESSION['csrf_tokens'][$key]);
+                }
+                elseif($token->csrfToken == $_POST['_csrf']){
+                    unset($_SESSION['csrf_tokens'][$key]);
+                    return true;
+                }
             }
         }
         return false;
